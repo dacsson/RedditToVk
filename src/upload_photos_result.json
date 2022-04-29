@@ -1,0 +1,62 @@
+{
+  "response": [
+    {
+      "album_id": -14,
+      "date": 1651236905,
+      "id": 457255028,
+      "owner_id": 612186252,
+      "access_key": "8315cb5e8530218253",
+      "sizes": [
+        {
+          "height": 73,
+          "url": "https://sun9-18.userapi.com/s/v1/if2/uG4QAkwkhtQ2j-0ltFxtJth1AmTwRmlgir0RNaMlgMgckBzqrg-1IR79wDDEAJn7BMnrJuCspRiAJG6DtViQ245M.jpg?size=75x72&quality=96&type=album",
+          "type": "s",
+          "width": 75
+        },
+        {
+          "height": 126,
+          "url": "https://sun9-18.userapi.com/s/v1/if2/VybsaZS8gQ1PSKftIYThBkqzTl3QUEcpA7oZPWjQ3CPVPKt_ICEw05DFHVweJvgzqd0010_jKnZbwaqWzotAY6Pj.jpg?size=130x126&quality=96&type=album",
+          "type": "m",
+          "width": 130
+        },
+        {
+          "height": 584,
+          "url": "https://sun9-18.userapi.com/s/v1/if2/kC3oCyoeGGq4k4oqakuGvvOsdNG0rzDV9YgnQuNrxb0bgiVTuxcedm_haETTsDJxd8FKZmP6u8g9gSzc0HLkDEGn.jpg?size=604x584&quality=96&type=album",
+          "type": "x",
+          "width": 604
+        },
+        {
+          "height": 696,
+          "url": "https://sun9-18.userapi.com/s/v1/if2/ERB0qCyweZ0Dl_oJn5x9jb5UywXG84MpuJKsDF5BQlUft3PwlLFd1IroKqTu5ujpmPNxOxZMIcQ3QkUqtEMUglGs.jpg?size=720x696&quality=96&type=album",
+          "type": "y",
+          "width": 720
+        },
+        {
+          "height": 126,
+          "url": "https://sun9-18.userapi.com/s/v1/if2/VybsaZS8gQ1PSKftIYThBkqzTl3QUEcpA7oZPWjQ3CPVPKt_ICEw05DFHVweJvgzqd0010_jKnZbwaqWzotAY6Pj.jpg?size=130x126&quality=96&type=album",
+          "type": "o",
+          "width": 130
+        },
+        {
+          "height": 193,
+          "url": "https://sun9-18.userapi.com/s/v1/if2/L7lCq0Wig8F0GsBQzEVzFKxtP1gMj9DU0hPWmTC7RExkCMD3iUZncjhI6JWXz0cUSvYHT9f2jo6gTWAduZMlmP99.jpg?size=200x193&quality=96&type=album",
+          "type": "p",
+          "width": 200
+        },
+        {
+          "height": 309,
+          "url": "https://sun9-18.userapi.com/s/v1/if2/f3pjO-YlYtXKlvHpIR3uAkkmhmlccgZHdSSvpb6lIS85cHsS8HlnBhtcGJw9NcfkT2zxLUEcEv6N74m2pfS9-tvR.jpg?size=320x309&quality=96&type=album",
+          "type": "q",
+          "width": 320
+        },
+        {
+          "height": 493,
+          "url": "https://sun9-18.userapi.com/s/v1/if2/RvSwarOnJGxtKdnedB_8Ck6-vSwWd8MJYXK9JGalIdoBDhmo9PUDYxV5jEYirm2VrrfNmxJ_4nAPGbIyFVL136gv.jpg?size=510x493&quality=96&type=album",
+          "type": "r",
+          "width": 510
+        }
+      ],
+      "text": ""
+    }
+  ]
+}
