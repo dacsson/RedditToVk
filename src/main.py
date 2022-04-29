@@ -106,6 +106,8 @@ def UploadPostWithVideo(quote, token, group_id, owner_id_group, vk):
 def HandlePost(reddit_read_only, subreddit, hot_posts, n, token, group_id, owner_id_group, vk):
     post = hot_posts[n]
     link = post.permalink
+    quote = post.title + "\n\n#" + subreddit
+    
     print('\nPost link: ', link, '\n')
     if(post.media):
         url = post.media['reddit_video']['fallback_url']
@@ -115,7 +117,7 @@ def HandlePost(reddit_read_only, subreddit, hot_posts, n, token, group_id, owner
         urllib.request.urlretrieve(url, name)
         time.sleep(5)
 
-        quote = post.title
+        
 
         UploadPostWithVideo(quote, token, group_id, owner_id_group, vk)
                 
@@ -128,8 +130,6 @@ def HandlePost(reddit_read_only, subreddit, hot_posts, n, token, group_id, owner
         try:
             img_url = imgs_json[0]['data']['children'][0]['data']['url_overridden_by_dest']
             print(img_url)
-
-            quote = post.title
 
             UploadPostImage(quote, img_url, token, group_id, owner_id_group, vk)
         except:
