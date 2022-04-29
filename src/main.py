@@ -10,19 +10,6 @@ from vk_api.upload import VkUpload
 from urllib.request import (Request, urlopen, urlretrieve)
 from deep_translator import GoogleTranslator
 
-# - Получил токен тут: https://oauth.vk.com/authorize?client_id=<app_id>&redirect_uri=https://oauth.vk.com/blank.html&display=page&scope=wall,photos&response_type=token&v=5.130
-#   надо создать приложение, в котором указать сообщество и вставить в ссылку его айди
-
-# - Авторизируемся в вк
-
-#vk_session = vk_api.VkApi(token=token)
-
-# - Чтобы легче обращаться к функциям апи
-#vk = vk_session.get_api()
-
-# - Чтобы леге использовать аплоад функ
-#upload = VkUpload(vk_session)
-
 def download_image(url, file_path, file_name):
     full_path = "../" + file_path + file_name
     urllib.request.urlretrieve(url, full_path)
@@ -40,11 +27,9 @@ def GetUploadServerImager(token, group_id):
 
 def UploadPostImage(quote, img, token, group_id, owner_id_group, vk):
 
-    # - Получаем урл от сервера ВК (не то урл которая будет дальше как переменная url)
-    upload_url = GetUploadServerImager(token, group_id)      
+    upload_url = GetUploadServerImager(token, group_id)             
     
-    # - Имя под которым сохраниться картинка
-    file_name = "photo.jpg"
+    file_name = "photo.jpg"                                         
 
     download_image(img, 'res/', file_name)
 
@@ -103,12 +88,15 @@ def UploadPostWithVideo(quote, token, group_id, owner_id_group, vk):
         attachment = attachment
     )
 
+# - Разобраться с потом (main отличие это пост с картинкой или с видео тогда отличаются фукнции постинга в группу)
 def HandlePost(reddit_read_only, subreddit, hot_posts, n, token, group_id, owner_id_group, vk):
     post = hot_posts[n]
     link = post.permalink
     quote = post.title + "\n\n#" + subreddit
-    
+
     print('\nPost link: ', link, '\n')
+
+    # - Медиа у поста будет в случае если прикреплено видео
     if(post.media):
         url = post.media['reddit_video']['fallback_url']
         url = url.split("?")[0]
@@ -117,12 +105,11 @@ def HandlePost(reddit_read_only, subreddit, hot_posts, n, token, group_id, owner
         urllib.request.urlretrieve(url, name)
         time.sleep(5)
 
-        
-
         UploadPostWithVideo(quote, token, group_id, owner_id_group, vk)
-                
+    
+    # - Пост с картинкой
     else:
-        post_full_url = 'https://www.reddit.com' + link[:-1] + '.json'
+        post_full_url = 'https://www.reddit.com' + link[:-1] + '.json'                      
         req = Request(post_full_url)
         time.sleep(5)
         imgs_json = json.loads(urlopen(req).read())
@@ -132,6 +119,8 @@ def HandlePost(reddit_read_only, subreddit, hot_posts, n, token, group_id, owner
             print(img_url)
 
             UploadPostImage(quote, img_url, token, group_id, owner_id_group, vk)
+
+        # - Если в посте нет ни картинки ни видео то переходим к следующему посту из массива
         except:
             n+=1
             HandlePost(reddit_read_only, subreddit, hot_posts, n, token, group_id, owner_id_group, vk)
@@ -139,36 +128,33 @@ def HandlePost(reddit_read_only, subreddit, hot_posts, n, token, group_id, owner
 # - Мейн функшион
 def main():
 
+    # - PRAW
     reddit_read_only = praw.Reddit( client_id="UhsZdMdh0U4-qkxLwhwX9g",                     # your client id
-                                    client_secret="FSkyKaVS3FQu9LfieF7pDW974hwT4Q",        # your client secret
+                                    client_secret="FSkyKaVS3FQu9LfieF7pDW974hwT4Q",         # your client secret
                                     user_agent="RandomToVK")                                # your user agent
 
-    # - Контейнеры для данных (quotes - текст треда)
-    quotes_cont = []
-    vids_cont = []    
     with open('E:/RedditLogInfo.json', 'r') as reddits_json:
         subreddits = json.load(reddits_json)
 
     for i in range(3):
+        
+        # - Вытаскиваем из жисона информацию для vk и какой сабреддит будем скрапить
+        # - Получил токен тут: https://oauth.vk.com/authorize?client_id=<app_id>&redirect_uri=https://oauth.vk.com/blank.html&display=page&scope=wall,photos,video,offline&response_type=token&v=5.130
+        #   надо создать приложение (для каждого паблика своё), в котором указать сообщество и вставить в ссылку его айди 
+
         subreddit = reddit_read_only.subreddit(subreddits[str(i)]['sub_name'])
         token = subreddits[str(i)]['token']
         application_id = int(subreddits[str(i)]['application_id'])
         group_id = int(subreddits[str(i)]['group_id'])
         owner_id_group = int(subreddits[str(i)]['owner_id_group'])
 
-        # - Авторизируемся в вк
-
-        vk_session = vk_api.VkApi(token=token)
-
-        # - Чтобы легче обращаться к функциям апи
-        vk = vk_session.get_api()
-
-        # - Чтобы леге использовать аплоад функ
-        upload = VkUpload(vk_session)
+        vk_session = vk_api.VkApi(token=token)                                      # - Авторизируемся в вк
+        vk = vk_session.get_api()                                                   # - Чтобы легче обращаться к функциям апи
+        upload = VkUpload(vk_session)                                               # - Чтобы леге использовать аплоад функ
 
         hot_posts = []
 
-        # - Оставить в таком виде, чтобы потом модифицировать сбор нескольких постов
+        # - Собираем несколько горячих постов с реддита (чтобы если пост без контента можно было запостить следующий с картинокой/видео)
         for post in subreddit.hot(limit=5):
             hot_posts.append(post)
         
