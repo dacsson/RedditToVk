@@ -50,7 +50,7 @@ def UploadPostImage(quote, img, token, group_id, owner_id_group, vk):
 
     attachments = 'photo' + str(photo_saved["response"][0]['owner_id']) + '_' + str(photo_saved["response"][0]['id'])
 
-    quote = GoogleTranslator(source='auto', target='ru').translate(quote)
+    quote = GoogleTranslator(source='auto', target='ru').translate(quote) + "\n//\n" + quote + "\n\n#" + str(subreddit)
 
     vk.wall.post(
         owner_id = owner_id_group,
@@ -79,7 +79,7 @@ def UploadPostWithVideo(quote, token, group_id, owner_id_group, vk):
 
     attachment = 'video' + str(ur['owner_id']) + '_' + str(ur['video_id'])
 
-    quote = GoogleTranslator(source='auto', target='ru').translate(quote)
+    quote = GoogleTranslator(source='auto', target='ru').translate(quote) + "\n//\n" + quote + "\n\n#" + str(subreddit)
 
     vk.wall.post(
         owner_id = owner_id_group,
@@ -92,7 +92,7 @@ def UploadPostWithVideo(quote, token, group_id, owner_id_group, vk):
 def HandlePost(reddit_read_only, subreddit, hot_posts, n, token, group_id, owner_id_group, vk):
     post = hot_posts[n]
     link = post.permalink
-    quote = post.title + "\n\n#" + subreddit
+    quote = post.title 
 
     print('\nPost link: ', link, '\n')
 
@@ -111,9 +111,11 @@ def HandlePost(reddit_read_only, subreddit, hot_posts, n, token, group_id, owner
     else:
         post_full_url = 'https://www.reddit.com' + link[:-1] + '.json'                      
         req = Request(post_full_url)
-        time.sleep(5)
-        imgs_json = json.loads(urlopen(req).read())
-        time.sleep(5)
+        try:
+            imgs_json = json.loads(urlopen(req).read())
+        except:
+            time.sleep(15)
+            imgs_json = json.loads(urlopen(req).read())
         try:
             img_url = imgs_json[0]['data']['children'][0]['data']['url_overridden_by_dest']
             print(img_url)
@@ -136,7 +138,7 @@ def main():
     with open('E:/RedditLogInfo.json', 'r') as reddits_json:
         subreddits = json.load(reddits_json)
 
-    for i in range(3):
+    for i in range(4):
         
         # - Вытаскиваем из жисона информацию для vk и какой сабреддит будем скрапить
         # - Получил токен тут: https://oauth.vk.com/authorize?client_id=<app_id>&redirect_uri=https://oauth.vk.com/blank.html&display=page&scope=wall,photos,video,offline&response_type=token&v=5.130
