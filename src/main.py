@@ -25,7 +25,7 @@ def GetUploadServerImager(token, group_id):
     print(y)
     return y['response']['upload_url'] 
 
-def UploadPostImage(quote, img, token, group_id, owner_id_group, vk):
+def UploadPostImage(quote, img, token, group_id, owner_id_group, vk, subreddit):
 
     upload_url = GetUploadServerImager(token, group_id)             
     
@@ -67,7 +67,7 @@ def GetUploadServerVideo(title, token, group_id):
     print(y)
     return y['response']['upload_url'] 
 
-def UploadPostWithVideo(quote, token, group_id, owner_id_group, vk):
+def UploadPostWithVideo(quote, token, group_id, owner_id_group, vk, subreddit):
     
     upload_url = GetUploadServerVideo(quote, token, group_id)     
 
@@ -105,7 +105,7 @@ def HandlePost(reddit_read_only, subreddit, hot_posts, n, token, group_id, owner
         urllib.request.urlretrieve(url, name)
         time.sleep(5)
 
-        UploadPostWithVideo(quote, token, group_id, owner_id_group, vk)
+        UploadPostWithVideo(quote, token, group_id, owner_id_group, vk, subreddit)
     
     # - Пост с картинкой
     else:
@@ -120,7 +120,7 @@ def HandlePost(reddit_read_only, subreddit, hot_posts, n, token, group_id, owner
             img_url = imgs_json[0]['data']['children'][0]['data']['url_overridden_by_dest']
             print(img_url)
 
-            UploadPostImage(quote, img_url, token, group_id, owner_id_group, vk)
+            UploadPostImage(quote, img_url, token, group_id, owner_id_group, vk, subreddit)
 
         # - Если в посте нет ни картинки ни видео то переходим к следующему посту из массива
         except:
@@ -138,7 +138,7 @@ def main():
     with open('E:/RedditLogInfo.json', 'r') as reddits_json:
         subreddits = json.load(reddits_json)
 
-    for i in range(4):
+    for i in range(5):
         
         # - Вытаскиваем из жисона информацию для vk и какой сабреддит будем скрапить
         # - Получил токен тут: https://oauth.vk.com/authorize?client_id=<app_id>&redirect_uri=https://oauth.vk.com/blank.html&display=page&scope=wall,photos,video,offline&response_type=token&v=5.130
